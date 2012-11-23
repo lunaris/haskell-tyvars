@@ -53,6 +53,9 @@ parseExtendedType s
       ParseFailed loc err -> Left err
 
 splitType :: Type -> [Type]
+splitType (TyForall _ _ t)
+  = splitType t
+
 splitType (TyFun t1 t2)
   = t1 : splitType t2
 
@@ -110,6 +113,15 @@ freshFunction
   = freshPreset vsFunctions
 
 tyVar :: Type -> V String
+tyVar (TyApp t1 t2)
+  | s1 == "m"     = fresh "m"
+  | s1 == "Maybe" = fmap ('m' :) (tyVar t2)
+  where
+    s1 = prettyPrint t1
+
+tyVar (TyForall _ _ t)
+  = tyVar t
+
 tyVar (TyFun _ _)
   = freshFunction
 
@@ -117,9 +129,7 @@ tyVar (TyParen t)
   = tyVar t
 
 tyVar (TyList t)
-  = do
-      v <- tyVar t
-      return (v ++ "s")
+  = fmap (++ "s") (tyVar t)
 
 tyVar t
   | s == "Char"           = fresh "c"
