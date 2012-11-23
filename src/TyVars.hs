@@ -5,6 +5,7 @@
 module TyVars where
 
 import Control.Monad.State
+import Data.List
 import Language.Haskell.Exts
 
 import qualified Data.Label as L
@@ -121,7 +122,12 @@ tyVar (TyList t)
       return (v ++ "s")
 
 tyVar t
-  = freshScalar
+  | s == "Char"           = fresh "c"
+  | "Exp" `isPrefixOf` s  = fresh "e"
+  | s == "String"         = fresh "s"
+  | otherwise             = freshScalar
+  where
+    s = prettyPrint t
 
 main :: IO ()
 main
