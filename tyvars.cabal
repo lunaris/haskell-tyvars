@@ -1,0 +1,23 @@
+Name:               TyVars
+Description:        A program for generating a list of parameter variable names
+                    from a type signature.
+
+Version:            0.0
+Cabal-version:      >= 1.8
+Build-type:         Simple
+
+License:            AllRightsReserved
+Copyright:          Will Jones
+Homepage:           http://www.doc.ic.ac.uk/~wlj05
+
+Executable tyvars
+  Build-depends:    base, containers, fclabels, haskell-src-exts, mtl
+  Main-is:          TyVars.hs
+  Hs-source-dirs:   src
+  Ghc-options:      -main-is TyVars
+
+Executable styvars
+  Build-depends:    base, containers, fclabels, haskell-src-exts, mtl
+  Main-is:          TyVars.hs
+  Hs-source-dirs:   src
+  Ghc-options:      -main-is TyVars -static -optc-static -optl-static -fvia-c -optl-pthread
