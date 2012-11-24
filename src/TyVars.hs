@@ -5,6 +5,7 @@
 module TyVars where
 
 import Control.Monad.State
+import Data.Functor
 import Data.List
 import Language.Haskell.Exts
 
@@ -115,7 +116,7 @@ freshFunction
 tyVar :: Type -> V String
 tyVar (TyApp t1 t2)
   | s1 == "m"     = fresh "m"
-  | s1 == "Maybe" = fmap ('m' :) (tyVar t2)
+  | s1 == "Maybe" = ('m' :) <$> tyVar t2
   where
     s1 = prettyPrint t1
 
@@ -129,7 +130,7 @@ tyVar (TyParen t)
   = tyVar t
 
 tyVar (TyList t)
-  = fmap (++ "s") (tyVar t)
+  = (++ "s") <$> tyVar t
 
 tyVar t
   | s == "Char"           = fresh "c"
