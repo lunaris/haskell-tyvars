@@ -135,6 +135,7 @@ tyVar t
   | s == "Char"           = fresh "c"
   | "Exp" `isPrefixOf` s  = fresh "e"
   | s == "String"         = fresh "s"
+  | s == "World"          = fresh "w"
   | otherwise             = freshScalar
   where
     s = prettyPrint t
